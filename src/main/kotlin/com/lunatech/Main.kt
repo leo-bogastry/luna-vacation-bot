@@ -37,7 +37,7 @@ fun main(args: Array<String>) {
     val token = "xoxp-..."
 
     runBlocking {
-        val text = getIfImOnVacation(client)
+        val text = getOnVacation(client)
         val response = slack.methods(token).chatPostMessage { req: ChatPostMessageRequestBuilder ->
             req
                 .channel(channelId)
@@ -47,7 +47,7 @@ fun main(args: Array<String>) {
     }
 }
 
-suspend fun getIfImOnVacation(client: HttpClient): String {
+suspend fun getOnVacation(client: HttpClient): String {
     // get jwt token
     val token = client.submitForm(
         url = "http://localhost:8080/realms/lunarealm/protocol/openid-connect/token",
@@ -58,7 +58,7 @@ suspend fun getIfImOnVacation(client: HttpClient): String {
         },
     ).body<BotToken>().access_token
 
-    val response = client.get("http://localhost:5050/imionvacation") {
+    val response = client.get("http://localhost:5050/onvacation") {
         bearerAuth(token)
     }.bodyAsText()
 
